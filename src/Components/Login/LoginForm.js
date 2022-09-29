@@ -5,7 +5,7 @@ import Input from "../Forms/Input";
 import useForm from "../../Hooks/useForm";
 
 const LoginForm = () => {
-  const username = useForm();
+  const username = useForm("email");
   const password = useForm();
 
   function handleSubmit(event) {
