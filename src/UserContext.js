@@ -13,10 +13,17 @@ export const UserStorage = ({ children }) => {
     async function autoLogin() {
       const token = window.localStorage.getItem("token");
       if (token) {
-        const { url, options } = TOKEN_VALIDATE_POST(token);
-        const response = await fetch(url, options);
-        const json = await response.json();
-        console.log(json);
+        try {
+          setError(null);
+          setLoading(true);
+          const { url, options } = TOKEN_VALIDATE_POST(token);
+          const response = await fetch(url, options);
+          if (!response.ok) throw new Error("Invalid token");
+          await getUser(token);
+        } catch (err) {
+        } finally {
+          setLoading(false);
+        }
       }
     }
     autoLogin();
@@ -38,8 +45,16 @@ export const UserStorage = ({ children }) => {
     getUser(token);
   }
 
+  async function userLogout() {
+    setData(null);
+    setError(null);
+    setLoading(false);
+    setLogin(false);
+    window.localStorage.removeItem("token");
+  }
+
   return (
-    <UserContext.Provider value={{ userLogin, data }}>
+    <UserContext.Provider value={{ userLogin, userLogout, data }}>
       {children}
     </UserContext.Provider>
   );
