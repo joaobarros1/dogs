@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { UserContext } from "../../UserContext";
 import { ReactComponent as MinhasFotos } from "../../Assets/feed.svg";
 import { ReactComponent as Estatisticas } from "../../Assets/estatisticas.svg";
@@ -13,17 +13,28 @@ const UserHeaderNav = () => {
   const mobile = useMedia("(max-width: 40rem)");
   const [mobileMenu, setMobileMenu] = useState(false);
 
+  const { pathname } = useLocation();
+  useEffect(() => {
+    setMobileMenu(false);
+  }, [pathname]);
+
   return (
     <>
       {mobile && (
         <button
           aria-label="Menu"
-          className={styles.mobileButton}
+          className={`${styles.mobileButton} ${
+            mobileMenu && styles.mobileButtonActive
+          }`}
           onClick={() => setMobileMenu(!mobileMenu)}
         ></button>
       )}
 
-      <nav className={styles.nav}>
+      <nav
+        className={`${mobile ? styles.navMobile : styles.nav} ${
+          mobileMenu && styles.navMobileActive
+        }`}
+      >
         <NavLink to="/conta" end>
           <MinhasFotos />
           {mobile && "Minhas Fotos"}
