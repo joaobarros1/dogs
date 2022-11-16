@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Loading.module.css";
 
 const Loading = () => {
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    function updateStep(step) {
+      setStep((step) => {
+        if (step < 3) return step + 1;
+        else return 0;
+      });
+    }
+    const interval = setInterval(updateStep, 300);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  function displayStep(i) {
+    return {
+      display: step === i ? "block" : "none",
+    };
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.loading}>
@@ -12,7 +33,7 @@ const Loading = () => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g style={{ display: "none" }}>
+          <g style={displayStep(0)}>
             <path
               fillRule="evenodd"
               clipRule="evenodd"
@@ -20,7 +41,7 @@ const Loading = () => {
               fill="#333"
             />
           </g>
-          <g style={{ display: "none" }}>
+          <g style={displayStep(1)}>
             <path
               fillRule="evenodd"
               clipRule="evenodd"
@@ -40,7 +61,7 @@ const Loading = () => {
               fill="#333"
             />
           </g>
-          <g style={{ display: "none" }}>
+          <g style={displayStep(2)}>
             <path
               fillRule="evenodd"
               clipRule="evenodd"
@@ -60,7 +81,7 @@ const Loading = () => {
               fill="#333"
             />
           </g>
-          <g style={{ display: "none" }}>
+          <g style={displayStep(3)}>
             <path
               fillRule="evenodd"
               clipRule="evenodd"
