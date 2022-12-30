@@ -5,12 +5,6 @@ const useFetch = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const teste = () => {
-    console.log("testando git");
-  };
-
-  teste();
-
   const request = useCallback(async (url, options) => {
     let response;
     let json;
